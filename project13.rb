@@ -53,10 +53,12 @@ class Account
 end
 
 a = Account.new('Steve')
+puts a.display
 a.deposit(100)
 puts a.balance
 
-b = Account.new('Jeron') 
+b = Account.new('Jeron')
+puts b.display
 b.deposit(50)
 puts b.balance
 
