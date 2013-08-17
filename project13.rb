@@ -13,9 +13,8 @@ class Account
     end
 
     def balance
-        bal = balance()
         st = @db.query("SELECT balance FROM accounts WHERE name = ('#{account_holder}')")
-        st.execute(bal)
+        st.execute
         st.close if st
     end
 
