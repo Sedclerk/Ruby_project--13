@@ -12,37 +12,33 @@ class Account
     end
     
     def balance
-        bal = 0
-        st = @db.query("SELECT balance FROM accounts WHERE name = ('#{account_holder}')")
-        return bal
+        balance = 0
+        st = @db.query("SELECT balance FROM accounts WHERE name = '#{account_holder}'")
+        return balance
     end
     
     def deposit(money)
         bal = balance()
         new_balance = bal + money
-        st = @db.query("INSERT INTO accounts (balance) VALUES ('#{new_balance}')")
+        st = @db.query("UPDATE accounts SET balance = '#{new_balance}'  WHERE name = '#{account_holder}'")
     end
     
     def withdraw(money)
         bal = balance()
         new_balance = bal - money
-        st = @db.query("INSERT INTO accounts (balance) VALUES ('#{new_balance}')")
+        st = @db.query("UPDATE accounts SET balance = '#{new_balance}'  WHERE name = '#{account_holder}'")
         
     end
     
     def transfer(money, target_account)
         bal = balance()
         new_balance = bal - money
-        st = @db.prepare("INSERT INTO accounts (balance) VALUES ('#{new_balance}')")
-        st.execute(new_balance)
+        st = @db.query("UPDATE accounts SET balance = '#{new_balance}'  WHERE name = '#{account_holder}'")
         target_account.deposit(money)
     end
-    
-    
 end
 
 a = Account.new('Steve')
-puts a.display
 a.deposit(100)
 puts a.balance
 
