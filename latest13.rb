@@ -12,9 +12,15 @@ class Account
     end
     
     def balance
-        balance = 0
+        bal = 0
         st = @db.query("SELECT balance FROM accounts WHERE name = '#{account_holder}'")
-        return balance
+        return bal
+    end
+    
+    def find(name)
+        st = db.query("SELECT * FROM accounts WHERE name = '#{account_holder}'")
+        st.execute(name)
+        st.each {|x| print x, " "}
     end
     
     def deposit(money)
@@ -38,11 +44,11 @@ class Account
     end
 end
 
-a = Account.new('Steve')
+a = Account.new('BOB')
 a.deposit(100)
 puts a.balance
 
-b = Account.new('Jeron')
+b = Account.new('Ketaka')
 puts b.display
 b.deposit(50)
 puts b.balance
@@ -50,8 +56,8 @@ puts b.balance
 c = Account.find('Steve')
 puts c.balance
 
-c.transfer(25, b)
-puts c.balance
+a.transfer(25, b)
+puts a.balance
 
 d = Account.find('Jeron')
 puts d.balance
