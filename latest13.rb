@@ -12,52 +12,51 @@ class Account
     end
     
     def balance
-        st = @db.query("SELECT balance FROM accounts WHERE name = '#{account_holder}'")
-        bal = st.at(0)
-        return bal
+        st = @db.query("SELECT balance FROM accounts WHERE name = '#{account_holder}' LIMIT 1")
+        result = st.fetch_hash
+        return result['balance']
     end
     
     def find(name)
-        st = @db.query("SELECT * FROM accounts WHERE name = '#{account_holder}'")
+        st = @db.query("SELECT * FROM accounts WHERE name = '#{account_holder}' LIMIT 1")
         st.execute(name)
         st.each {|x| print x, " "}
     end
     
     def deposit(money)
-        bal = balance()
-        new_balance = bal + money
+        new_balance = balance()
+        new_balance += money
         bal = @db.query("UPDATE accounts SET balance = '#{new_balance}'  WHERE name = '#{account_holder}'")
     end
     
     def withdraw(money)
-        bal = balance()
-        new_balance = bal - money
+        new_balance = balance()
+        new_balance -= money
         bal = @db.query("UPDATE accounts SET balance = '#{new_balance}'  WHERE name = '#{account_holder}'")
         
     end
     
     def transfer(money, target_account)
-        bal = balance()
-        new_balance = bal - money
+        new_balance = balance()
+        new_balance -= money
         bal = @db.query("UPDATE accounts SET balance = '#{new_balance}'  WHERE name = '#{account_holder}'")
         target_account.deposit(money)
     end
 end
 
-a = Account.new('Steven')
-a.deposit(100)
+a = Account.new('OUI4')
+a.deposit(111111)
 puts a.balance
 
-b = Account.new('Jerons')
-
-b.deposit(50)
+b = Account.new('YES4')
+b.deposit(5555)
 puts b.balance
 
+puts a.find('OUI4')
 
-puts a.find('Steven')
+puts b.find('NON4')
 
-
-puts b.find('Jerons')
+a.withdraw('12')
 
 a.transfer(25, b)
 puts a.balance
