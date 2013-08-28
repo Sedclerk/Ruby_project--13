@@ -38,10 +38,7 @@ class Account
         puts bal
     end
     def transfer(money, target_account)
-        bal = balance()
-        num = bal.to_f
-        num -= money
-        st = @db.query("UPDATE accounts SET balance = '#{num}'  WHERE name = '#{account_holder}'")
+        withdraw(money)
         target_account.deposit(money)
     end
 end
